@@ -1,6 +1,15 @@
 # Description
 #	Fix iOS typo
 
+channels = [
+  "dev",
+  "mobile",
+  "agile-ios",
+  "general",
+  "canaldobot",
+  "Shell"
+]
+
 module.exports = (robot) ->
 
 	robot.hear /\bios\b/i, (res) ->
@@ -9,7 +18,7 @@ module.exports = (robot) ->
 		index = text.search /\bios\b/i
 		text = text.substr(index, 3)
 
-		if text isnt "iOS" and (channelName is "mobile" or channelName is "agile-ios" or channelName is "general" or channelName is "Shell")
+		if text isnt "iOS" and channelName in channels
 			count = robot.brain.get('dolphin_killed_count') + 1
 			robot.brain.set('dolphin_killed_count', count)
 			res.send "Você acabou de matar #{":dagger_knife:"} um #{":dolphin:"} ao escrever \"iOS\" errado. Golfinhos mortos: #{count}"

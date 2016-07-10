@@ -4,7 +4,10 @@ channels = [
   "agile-ios",
   "general",
   "canaldobot",
-  "Shell"
+  "Shell",
+  "agile-infra",
+  "agile-suporte",
+  "sucesso"
 ]
 options= rejectUnauthorized: false
 

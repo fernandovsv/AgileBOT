@@ -4,11 +4,16 @@
 #   hubot plr - Displays the current PLR status
 
 options= rejectUnauthorized: false
-
+NumberHelper = require('../utils/numberhelpers')
+currencyOptions = {
+             separator: '.',
+             delimiter: '.',
+             unit: 'R$'
+         }
 module.exports = (robot) ->
 
     robot.hear /plr/i, (res) ->
-       
+        
          lastYearRevenue = new Number(process.env.INVOLVES_LAST_YEAR_REVENUES)
          firstSemesterRevenues = new Number(process.env.INVOLVES_FIRST_SEMESTER_REVENUES)       
          currentRevenues =  new Number(process.env.INVOLVES_CURRENT_REVENUES)
@@ -46,8 +51,9 @@ module.exports = (robot) ->
          revenueNextLevelLeft  = nextLevelRevenue - revenuesEstimated  
          
          plrValueEstimated = (revenuesEstimated - firstSemesterRevenues) * (plrPercentage/100) * (currentProfitPercentage/100) 
-                    
-         res.reply "Nossa estimativa de faturamento para este ano é de R$#{revenuesEstimated.toFixed(2)}, se mantivermos a lucratividade de #{currentProfitPercentage.toFixed(0)}% 
-nosso PLR será de #{plrPercentage.toFixed(0)}% do lucro liquido, o que equivale a R$#{plrValueEstimated.toFixed(2)}. Já atingimos #{goalPercentage.toFixed(2)}% da meta de triplicar e para atingir o próximo nível da 
-PLR (#{plrPercentage + 1}% do lucro liquido) precisamos faturar mais R$#{revenueNextLevelLeft.toFixed(2)}. Vom dalhe, POUURRA?"
-    	               
+         
+         res.reply "Nossa estimativa de faturamento para este ano é de #{NumberHelper.number_to_currency(revenuesEstimated, currencyOptions)}, se mantivermos a lucratividade de #{currentProfitPercentage.toFixed(0)}% 
+nosso PLR será de #{plrPercentage.toFixed(0)}% do lucro liquido, o que equivale a #{NumberHelper.number_to_currency(plrValueEstimated, currencyOptions)}. Já atingimos #{goalPercentage.toFixed(2)}% da meta de triplicar e para atingir o próximo nível da 
+PLR (#{plrPercentage + 1}% do lucro liquido) precisamos faturar mais #{NumberHelper.number_to_currency(revenueNextLevelLeft, currencyOptions)}. Vom dalhe, POUURRA?"
+    
+

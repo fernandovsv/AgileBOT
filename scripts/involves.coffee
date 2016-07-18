@@ -1,7 +1,7 @@
 # Description:
-#   Checks if Agile Promoter System is online
+#   Plr status
 # Commands:
-#   hubot plr - Displays the current PLR status
+#   plr - Displays the current PLR status
 
 options= rejectUnauthorized: false
 NumberHelper = require('../utils/numberhelpers')

@@ -1,13 +1,15 @@
 # Description:
-#   Checks if Agile Promoter System is online
+#   Displays the current PLR status
 # Commands:
 #   hubot plr - Displays the current PLR status
 
 options= rejectUnauthorized: false
 
 module.exports = (robot) ->
-
+   
+  
     robot.hear /plr/i, (res) ->
+       
        
          lastYearRevenue = new Number(process.env.INVOLVES_LAST_YEAR_REVENUES)
          firstSemesterRevenues = new Number(process.env.INVOLVES_FIRST_SEMESTER_REVENUES)       
@@ -50,4 +52,7 @@ module.exports = (robot) ->
          res.reply "Nossa estimativa de faturamento para este ano é de R$#{revenuesEstimated.toFixed(2)}, se mantivermos a lucratividade de #{currentProfitPercentage.toFixed(0)}% 
 nosso PLR será de #{plrPercentage.toFixed(0)}% do lucro liquido, o que equivale a R$#{plrValueEstimated.toFixed(2)}. Já atingimos #{goalPercentage.toFixed(2)}% da meta de triplicar e para atingir o próximo nível da 
 PLR (#{plrPercentage + 1}% do lucro liquido) precisamos faturar mais R$#{revenueNextLevelLeft.toFixed(2)}. Vom dalhe, POUURRA?"
+
+
+
     	               

@@ -20,7 +20,7 @@ upon have been set.
 
 You can start AgileBOT locally by running:
 
-    % bin/hubot
+    bin/hubot
 
 You'll see some start up output and a prompt:
 
@@ -33,6 +33,21 @@ Then you can interact with AgileBOT by typing `AgileBOT help`.
     AgileBOT animate me <query> - The same thing as `image me`, except adds [snip]
     AgileBOT help - Displays all of the help commands that AgileBOT knows about.
     ...
+
+Debugging
+---
+
+Install `node inspector`
+    
+    npm install -g node-inspector
+
+Run the inspector
+    
+    node-inspector --no-preload --web-port 8123
+
+execute the debug script
+    
+    bin/hubot-debug
 
 ### Configuration
 

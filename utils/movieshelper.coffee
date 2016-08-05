@@ -28,22 +28,30 @@ class MoviesHelper
 			throw "Sem internet?!"
 
 	@get_url_date_param = (dateText) ->
-		now = new Date()
-		now.setHours(0,0,0,0)
+		today = new Date()
 
-		dateArray = dateText.split("/")
-		selectedDate = new Date(now.getFullYear(), parseInt(dateArray[1] - 1), parseInt(dateArray[0]))
-		
-		days = MoviesHelper.days_diff(now, selectedDate)
+		selectedDate = today
+			
+		if /(amanhã|amanha)/i.exec(dateText) != null
+			selectedDate = new Date(selectedDate.getTime() + 86400000)
+		else if /(hoje)/i.exec(dateText) == null
+			dateArray = dateText.split("/")
+			selectedDate = new Date(today.getFullYear(), parseInt(dateArray[1] - 1), parseInt(dateArray[0]))
 
-		if days >= 7
-			throw "A programação muda toda quinta-feira, não consigo pegar os filmes."
-		else if days > 0
-			url = "/florianopolis/programacao/data-" + days
+		if (selectedDate.getTime() < today.getTime())
+			throw "A data selecionada é menor que hoje!"
 		else
-			url = "/florianopolis/programacao"
+			if today.getDay() < 4 && selectedDate.getDay() >= 4
+				throw "A programação muda toda quinta-feira, não consigo pegar os filmes."
+			else
+				days = MoviesHelper.days_diff(today, selectedDate)
 
-		return url
+				url = "/florianopolis/programacao"
+
+				if days > 0
+					url = url + "/data-" + days
+
+				return url
 
 	@days_diff = (first, second) ->
 		return (second - first) / (1000 * 60 * 60 * 24)
@@ -71,7 +79,10 @@ class MoviesHelper
 		for liTag in select(moviesTag, 'li')
 			name = MoviesHelper.parse_movie_name(select(liTag, 'td.name')[0])
 
-			genre = MoviesHelper.parse_movie_genre(select(liTag, 'td.categoria')[1])
+			categories = select(liTag, 'td.categoria')
+
+			is3D = MoviesHelper.parse_movie_is_3D(categories[0])
+			genre = MoviesHelper.parse_movie_genre(categories[1])
 
 			sessoesTags = select(liTag, 'td.sessoes')
 			bodyTags = select(sessoesTags, 'tbody')
@@ -81,12 +92,15 @@ class MoviesHelper
 			select(bodyTags, 'tr').forEach (sessionTag) ->
 				sessions.push MoviesHelper.parse_movie_session(sessionTag)
 
-			movies.push new Movie(name, genre, sessions)
+			movies.push new Movie(name, genre, is3D, sessions)
 
 		return movies
 
 	@parse_movie_genre = (tdTag) ->
 		return tdTag.children[0].data
+
+	@parse_movie_is_3D = (tdTag) ->
+		return tdTag.children?
 
 	@parse_movie_name = (tdTag) ->
 		h2Tag = select(tdTag, 'h2')[0]
@@ -94,6 +108,7 @@ class MoviesHelper
 
 	@parse_movie_session = (sessionTag) ->
 		room = sessionTag.children[3].children[0].children[0].data.trim()
+		room = room.substring(0, room.length - 1)
 		times = sessionTag.children[3].children[1].data.split(",")
 		type = sessionTag.children[1].children[0].data.trim()
 

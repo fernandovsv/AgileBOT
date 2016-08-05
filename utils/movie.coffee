@@ -1,8 +1,13 @@
 class Movie
-	constructor: (@name, @genre, @sessions) ->
+	constructor: (@name, @genre, @is3D, @sessions) ->
 
 	display: () ->
-		"#{@name} - " + (@sessions.map (session) ->
+		text = "#{@name}"
+
+		if @is3D
+			text = text + " (3D)"
+
+		text = text + " - " + (@sessions.map (session) ->
 			session.display()
 			).join(" | ")
 

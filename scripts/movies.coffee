@@ -1,36 +1,32 @@
 # Description:
 #   Shows the movies for a given date
+#
+#
+# Dependencies:
+#   "htmlparser": "1.7.7"
+#   "soupselect": "0.2.0"
+#
+#
 # Commands:
 #   hubot cinema dd/mm - Shows the movies for that date
 
+channels = [
+  "cininvolves",
+  "canaldobot",
+  "Shell"
+]
+
+MoviesHelper = require('../utils/movieshelper')
+
 module.exports = (robot) ->
 
-	robot.respond /cinema [0-9]{2}\/[0-9]{1,2}/i, (res) ->
-		dateText = /[0-9]{2}\/[0-9]{1,2}/.exec(res.message.text)[0]
+	robot.respond /cinema [0-9]{1,2}\/[0-9]{1,2}/i, (res) ->
+		dateText = /[0-9]{1,2}\/[0-9]{1,2}/.exec(res.message.text)[0]
 
-		url = getURL(dateText)
+		res.reply "Buscando os filmes do dia #{dateText}"
 
-		debugger
-
-		res.reply "Hi! URL is #{url}"
-
-	getURL = (dateText) ->
-		debugger
-
-		now = new Date()
-		now.setHours(0,0,0,0)
-
-		dateArray = dateText.split("/")
-		selectedDate = new Date(now.getFullYear(), parseInt(dateArray[1] - 1), parseInt(dateArray[0]))
-		
-		days = daydiff(now, selectedDate)
-
-		if days > 0
-			url = "/florianopolis/programacao/data-" + days
-		else
-			url = "/florianopolis/programacao"
-
-		return url
-
-	daydiff = (first, second) ->
-		return (second - first) / (1000 * 60 * 60 * 24)
+		try
+			MoviesHelper.get_movies dateText, (movies) ->
+				res.reply "Aqui estão os filmes!\n#{movies}"
+		catch e
+			res.reply e

@@ -1,7 +1,8 @@
 # Description:
-#   Checks if Agile Promoter System is online
+#   Checks the behavior of the Agile Promoters
 # Commands:
-#   hubot <domain> caiu? - Displays status of Agile Promoter System.
+#   hubot <domain> caiu? - Displays if the requested Agile Promoter is online, offline or slow
+#   hubot status <domain> - Displays status of Agile Promoter with the given domain.
 
 options= rejectUnauthorized: false
 
@@ -23,4 +24,11 @@ module.exports = (robot) ->
 	           else
 	               msg.reply "Não caiu, `#{system}` está online, mas parece que tá meio lentão. Codigo http: #{res.statusCode} #{":metal:"} respondido em #{millisEnd - millisStart} millis"
 	               
+    robot.respond /status ((.*))/i, (msg) ->
+        system = msg.match[1]
+        msg.robot.http("https://#{system}.agilepromoter.com/sistema/status/acao.action", options).get() (err, res, body) ->
+            if res.statusCode isnt 200
+               msg.reply "Não consegue Moises, deu ruim, run to the hills! `#{system}` está off! codigo http: #{res.statusCode} #{":scream:"}"
+            else
+               msg.reply "O status atual da " + system + " é ==> " +  body
 	               

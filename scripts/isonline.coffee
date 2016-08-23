@@ -27,8 +27,11 @@ module.exports = (robot) ->
     robot.respond /status ((.*))/i, (msg) ->
         system = msg.match[1]
         msg.robot.http("https://#{system}.agilepromoter.com/sistema/status/acao.action", options).get() (err, res, body) ->
-            if res.statusCode isnt 200
-               msg.reply "Não consegue Moises, deu ruim, run to the hills! `#{system}` está off! codigo http: #{res.statusCode} #{":scream:"}"
-            else
+            if res.statusCode is 200
                msg.reply "O status atual da " + system + " é ==> " +  body
+            else if res.statusCode is 500
+               msg.reply "Deu ruim, o status atual da " + system + " é ==> " +  body
+            else
+               msg.reply "Não consegue Moises, deu ruim, run to the hills! `#{system}` está off! codigo http: #{res.statusCode} #{":scream:"}" 
+               
 	               

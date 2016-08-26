@@ -19,6 +19,7 @@ channels = [
 ]
 
 MoviesHelper = require('../utils/movieshelper')
+YoutubeHelper = require('../utils/youtubehelper')
 Session = require('../utils/session')
 
 module.exports = (robot) ->
@@ -38,3 +39,14 @@ module.exports = (robot) ->
 	robot.respond /cinema salas/i, (res) ->
 		if res.message.room in channels
 			res.reply "As salas que vocês podem ir são: #{Session.avaliableRooms.join(", ")}"
+
+	robot.respond /trailer (.*)/i, (res) ->
+		if res.message.room in channels
+			movieName = res.match[1] + " trailer"
+			YoutubeHelper.API_KEY = process.env.GOOGLE_API_KEY
+
+			try
+				YoutubeHelper.search_trailer movieName, (trailer) ->
+					res.reply "#{trailer}"
+			catch e
+				res.reply e

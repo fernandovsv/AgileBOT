@@ -10,11 +10,13 @@
 # Commands:
 #   hubot cinema <hoje|amanhã|dd/mm> - Shows the movies for that date
 #	hubot cinema salas - Shows the available rooms for Involves
+#	hubot trailer <movie> - Shows the trailer for that movie
 
 channels = [
   "cininvolves",
   "general",
   "canaldobot",
+  "zuera",
   "Shell"
 ]
 

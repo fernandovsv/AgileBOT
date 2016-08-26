@@ -4,7 +4,7 @@ class YoutubeHelper
 	@API_KEY = ""
 
 	@search_trailer = (movieName, callback) ->
-		query = encodeURI(movieName + "trailer")
+		query = encodeURI(movieName + " trailer")
 		url = "https://www.googleapis.com/youtube/v3/search?part=id&q=#{query}&type=video&key=#{@API_KEY}"
 
 		req = http.get url, (res) ->

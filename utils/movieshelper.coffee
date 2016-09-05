@@ -41,20 +41,17 @@ class MoviesHelper
 		if (selectedDate.getTime() < today.getTime())
 			throw "A data selecionada é menor que hoje!"
 		else
-			if today.getDay() < 4 && selectedDate.getDay() >= 4
-				throw "A programação muda toda quinta-feira, não consigo pegar os filmes."
-			else
-				days = MoviesHelper.days_diff(today, selectedDate)
+			days = MoviesHelper.days_diff(today.getDate(), selectedDate.getDate())
 
-				url = "/florianopolis/programacao"
+			url = "/florianopolis/programacao"
 
-				if days > 0
-					url = url + "/data-" + days
+			if days > 0
+				url = url + "/data-" + days
 
-				return url
+			return url
 
 	@days_diff = (first, second) ->
-		return (second - first) / (1000 * 60 * 60 * 24)
+		return parseInt((second - first) / (1000 * 60 * 60 * 24))
 
 	@show_movies = (movies) ->
 		return (movies.map (movie) ->
@@ -67,11 +64,20 @@ class MoviesHelper
 				console.log("Error: " + err)
 			else
 				ulTag = select(dom, 'ul.repeat-filmes')[0]
-				movies = MoviesHelper.parse_movies ulTag
-				callback MoviesHelper.show_movies movies
+
+				if MoviesHelper.has_movies select(ulTag, 'li')
+					movies = MoviesHelper.parse_movies ulTag
+					callback MoviesHelper.show_movies movies
+				else
+					callback "Nenhuma programação cadastrada para esta data"
 
 		parser = new htmlparser.Parser(handler)
 		parser.parseComplete(body)
+
+	@has_movies = (liTags) ->
+		liTag = liTags[0]
+		text = liTag.children[1].children[0].data
+		return text.trim().length == 0
 
 	@parse_movies = (moviesTag) ->
 		movies = []

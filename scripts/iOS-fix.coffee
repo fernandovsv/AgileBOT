@@ -26,5 +26,5 @@ module.exports = (robot) ->
 
 			if count != 0
 				dbCount = robot.brain.get('dolphin_killed_count') + count
-				robot.brain.set('dolphin_killed_count', count)
-				res.send "Você acabou de matar #{":dagger_knife:"} #{count} #{":dolphin:"} ao escrever \"iOS\" errado. Golfinhos mortos: #{dbCount}"			
+				robot.brain.set('dolphin_killed_count', dbCount)
+				res.send "Você acabou de matar #{":dagger_knife:"} #{count} #{":dolphin:"} ao escrever \"iOS\" errado. Golfinhos mortos: #{dbCount}"

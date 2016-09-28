@@ -20,6 +20,6 @@ ENV INVOLVES_NEXT_MONTH_ESTIMATED_REVENUES 996214
 ENV REDIS_URL redis://172.17.0.1:6379/hubot-brain
 
 WORKDIR /app
-
+RUN chmod +x /app/bin/hubot
 
 ENTRYPOINT  /app/bin/hubot

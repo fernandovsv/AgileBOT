@@ -1,7 +1,6 @@
 hubot:
-  image: bot
+  image: registry.agilepromoter.com/involves-bot:dockerbot
   restart: always
-
 
 redis:
   image: redis:latest

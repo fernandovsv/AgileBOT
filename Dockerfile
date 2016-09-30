@@ -1,4 +1,4 @@
-gitFROM mhart/alpine-node
+FROM mhart/alpine-node
 
 ADD . /app
 

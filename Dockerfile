@@ -1,4 +1,4 @@
-FROM mhart/alpine-node
+gitFROM mhart/alpine-node
 
 ADD . /app
 
@@ -18,6 +18,8 @@ ENV INVOLVES_LAST_YEAR_REVENUES 5424992
 ENV INVOLVES_NET_PROFIT 24
 ENV INVOLVES_NEXT_MONTH_ESTIMATED_REVENUES 996214
 ENV REDIS_URL redis://172.17.0.1:6379/hubot-brain
+#Keep alive for slack adapter
+HUBOT_SLACK_EXIT_ON_DISCONNECT x
 
 WORKDIR /app
 RUN chmod +x /app/bin/hubot

@@ -3,8 +3,7 @@
 # Commands:
 #   hubot <domain> caiu? - Displays if the requested Agile Promoter is online, offline or slow
 #   hubot status <domain> - Displays status of Agile Promoter with the given domain.
-#Added this comment for update test
-#Another Test
+
 
 options= rejectUnauthorized: false
 

@@ -1,0 +1,13 @@
+hubot:
+  build: .
+  restart: always
+
+
+redis:
+  image: redis:latest
+  volumes:
+    - /data/redis:/data
+  ports:
+    - 172.17.0.1:6379:6379
+  command: redis-server --appendonly yes
+  restart: always
